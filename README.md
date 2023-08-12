@@ -1,2 +1,3 @@
 # Melifera-Revamp
-# Technologies:Spring Boot,Dockerfile,docker-compose 
+Rewriting backend and frontend of Melifera project
+-Dockerized the project

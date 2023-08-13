@@ -11,7 +11,8 @@ services:
       - spring.datasource.url=jdbc:mysql://mysqldb:3306/melifera?allowPublicKeyRetrieval=true
       - EMAIL_USERNAME=vehicleproject528@gmail.com
       - EMAIL_PASSWORD=hjhwmwyuzdldpoke
-      - HELLO_MESSAGE=Hellppo
+      - CONFIRMATION.URL=http://localhost:9090
+      - HELLO_MESSAGE=Testingg
     depends_on:
       - mysqldb
     volumes:

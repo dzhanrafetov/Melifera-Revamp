@@ -13,6 +13,7 @@ import com.dzhanrafetov.melifera.service.confirmation_token_service.Confirmation
 import com.dzhanrafetov.melifera.service.email_service.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +27,6 @@ import java.util.UUID;
 
 @Service
 public class UserService {
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
     private final UserDtoConverter userDtoConverter;
@@ -148,26 +148,26 @@ public class UserService {
     }
 
 
-    public String verificationByUser(Long id) {
+    @Value("${confirmation.url}")
+    private String appUrl;
 
+    public String verificationByUser(Long id) {
         User user = findUserById(id);
 
         String token = UUID.randomUUID().toString();
-        if (!(user.getActive())) {
+        if (!user.getActive()) {
             ConfirmationToken confirmationToken = new ConfirmationToken(token, user);
-
             confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-            String link = "http://localhost:8080/v1/user/confirm?token=" + token;
-
+            String link = appUrl + "/v1/user/confirm?token=" + token;
             emailService.sendMail(user.getMail(), "Confirm mail", link);
 
             return token;
         } else {
-
             throw new IllegalStateException("email already confirmed");
         }
     }
+
 
     @Transactional
     public String confirmToken(String token) {

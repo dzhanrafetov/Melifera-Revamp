@@ -12,7 +12,6 @@ services:
       - EMAIL_USERNAME=vehicleproject528@gmail.com
       - EMAIL_PASSWORD=hjhwmwyuzdldpoke
       - CONFIRMATION.URL=http://localhost:9090
-      - HELLO_MESSAGE=Testingg
     depends_on:
       - mysqldb
     volumes:

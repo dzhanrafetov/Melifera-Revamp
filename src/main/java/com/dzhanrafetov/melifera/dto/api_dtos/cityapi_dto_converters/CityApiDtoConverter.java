@@ -25,7 +25,10 @@ public class CityApiDtoConverter {
     public List<CityApiDto> convert(List<CityApi> fromList){
         return fromList.stream().map(this::convert).collect(Collectors.toList());
     }
-    public CityApiDto convertToDto(int id, String name) {
-        return new CityApiDto(id, name);
+    public List<CityApiDto> convertToDtoList(List<String> cityNames) {
+        return cityNames.stream()
+                .map(cityName -> new CityApi(cityNames.indexOf(cityName) + 1, cityName)) // Assign unique IDs
+                .map(this::convert)
+                .collect(Collectors.toList());
     }
 }

@@ -36,8 +36,6 @@ public class  SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
-
-
         // .antMatchers(HttpMethod.GET, "/v1/advertisement/**").permitAll()  ?
         httpSecurity.csrf().disable()
                 .httpBasic()
@@ -55,9 +53,6 @@ public class  SecurityConfig {
 //                .antMatchers("/v1/user/**")
 //                .hasAnyRole("ADMIN","USER")
 //
-
-
-
 
                 .antMatchers("/v1/advertisement/admin/**")
                 .hasRole("ADMIN")

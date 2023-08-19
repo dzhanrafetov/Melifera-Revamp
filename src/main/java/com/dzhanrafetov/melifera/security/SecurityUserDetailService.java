@@ -1,8 +1,8 @@
 package com.dzhanrafetov.melifera.security;
 
 
-import com.dzhanrafetov.melifera.model.user_model.User;
-import com.dzhanrafetov.melifera.repository.user_repository.UserRepository;
+import com.dzhanrafetov.melifera.model.User;
+import com.dzhanrafetov.melifera.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

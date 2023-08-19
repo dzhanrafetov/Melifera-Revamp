@@ -1,6 +1,6 @@
 package com.dzhanrafetov.melifera.security;
 
-import com.dzhanrafetov.melifera.model.user_model.User;
+import com.dzhanrafetov.melifera.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -4,6 +4,7 @@ package com.dzhanrafetov.melifera.controller;
 import com.dzhanrafetov.melifera.dto.ImageDto;
 import com.dzhanrafetov.melifera.dto.requests.ImageUploadRequest;
 import com.dzhanrafetov.melifera.service.ImageService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ public class ImageController {
                 (ImageService.
                         uploadImage(id,request));
     }
+
     @GetMapping("/getImagesByAdvertisementId/{id}")
     public ResponseEntity<List<ImageDto>> getImagesByAdvertisementId(@PathVariable String id) {
         return ResponseEntity.ok(ImageService.getImagesByAdvertisementId(id));

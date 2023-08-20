@@ -44,6 +44,15 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserByMail(mail));
     }
 
+    @GetMapping("admin/getActiveUsers")
+    public ResponseEntity<List<UserDto>>  getActiveUsers(){
+        return ResponseEntity.ok(userService.getActiveUsers());
+    }
+    @GetMapping("admin/getInActiveUsers")
+    public ResponseEntity<List<UserDto>>  getInActiveUsers(){
+        return ResponseEntity.ok(userService.getInActiveUsers());
+    }
+
     @PostMapping
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody CreateUserRequest userRequest) {
         return ResponseEntity.ok(userService.createUser(userRequest));
@@ -53,14 +62,14 @@ public class UserController {
     @PatchMapping("admin/deactivateUserById/{id}")
     public ResponseEntity<Void> deactivateUser(@PathVariable("id") Long id) {
         userService.deactivateUser(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build(); // Use 204 No Content
 
     }
 
     @PatchMapping("admin/activateUserById/{id}")
     public ResponseEntity<Void> activateUser(@PathVariable("id") Long id) {
         userService.activateUser(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build(); // Use 204 No Content
 
     }
     @DeleteMapping("admin/deleteUserById/{id}")

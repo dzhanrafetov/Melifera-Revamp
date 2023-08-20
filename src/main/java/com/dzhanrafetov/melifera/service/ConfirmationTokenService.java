@@ -24,9 +24,8 @@ public class ConfirmationTokenService {
     }
 
 
-    public ConfirmationToken deleteConfirmationtoken(Long userId) {
+    public void deleteConfirmationtoken(Long userId) {
             confirmTokenRepository.deleteByUserId(userId);
 
-        return null;
     }
 }

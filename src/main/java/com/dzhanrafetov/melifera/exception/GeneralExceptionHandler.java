@@ -48,6 +48,16 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> generalExceptionHandler(Exception exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @ExceptionHandler(DuplicateEntryException.class)
+    public ResponseEntity<?> duplicateEntryExceptionHandler(DuplicateEntryException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ImageUploadLimitExceededException.class)
+    public ResponseEntity<?> imageUploadLimitExceededHandler(ImageUploadLimitExceededException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }
 
 

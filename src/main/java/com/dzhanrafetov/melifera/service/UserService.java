@@ -1,6 +1,7 @@
 package com.dzhanrafetov.melifera.service;
 
 
+import com.dzhanrafetov.melifera.configuration.TokenConfig;
 import com.dzhanrafetov.melifera.dto.UserDto;
 import com.dzhanrafetov.melifera.dto.converters.UserDtoConverter;
 import com.dzhanrafetov.melifera.dto.requests.CreateUserRequest;
@@ -10,6 +11,7 @@ import com.dzhanrafetov.melifera.model.ConfirmationToken;
 import com.dzhanrafetov.melifera.model.User;
 import com.dzhanrafetov.melifera.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,13 +31,15 @@ public class UserService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
+    private final TokenConfig tokenConfig;
 
-    public UserService(UserRepository userRepository, UserDtoConverter userDtoConverter, ConfirmationTokenService confirmationTokenService, EmailService emailService, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, UserDtoConverter userDtoConverter, ConfirmationTokenService confirmationTokenService, EmailService emailService, PasswordEncoder passwordEncoder, TokenConfig tokenConfig) {
         this.userRepository = userRepository;
         this.userDtoConverter = userDtoConverter;
         this.confirmationTokenService = confirmationTokenService;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
+        this.tokenConfig = tokenConfig;
     }
 
     public List<UserDto> getAllUsers() {
@@ -156,6 +160,7 @@ public class UserService {
 
 
     @Value("${confirmation.url}")
+
     private String appUrl;
 
     public void verificationByUser(Long id) {
@@ -163,11 +168,13 @@ public class UserService {
 
         String token = UUID.randomUUID().toString();
         if (!user.getActive()) {
-            ConfirmationToken confirmationToken = new ConfirmationToken(token, user);
+            LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(tokenConfig.tokenExpirationMinutes());
+            ConfirmationToken confirmationToken = new ConfirmationToken(token, user, LocalDateTime.now(), expirationTime);
             confirmationTokenService.saveConfirmationToken(confirmationToken);
 
             String link = appUrl + "/v1/user/confirm?token=" + token;
-            emailService.sendMail(user.getMail(), "Confirm mail", link);
+            emailService.sendMail(user.getMail(), "Confirm mail",
+                    "Hello, " + user.getUsername() + "\n" + "This is the confirmation link: " + link);
 
         } else {
             throw new IllegalStateException("email already confirmed");
@@ -175,7 +182,8 @@ public class UserService {
     }
 
 
-    @Transactional
+
+@Transactional
     public String confirmToken(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)

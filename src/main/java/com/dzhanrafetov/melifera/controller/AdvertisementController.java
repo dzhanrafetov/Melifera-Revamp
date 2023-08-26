@@ -118,10 +118,6 @@ public class AdvertisementController {
     }
 
 
-//    @GetMapping("all/getAdvertisementsByCategoryName/{categoryName}")
-//    public ResponseEntity<List<AdvertisementDto>> getAdvertisementsByCategoryName(@PathVariable String categoryName) {
-//        return ResponseEntity.ok(advertisementService.getAdvertisementsByCategoryName(categoryName));
-//    }
 
 
     @GetMapping("all/getActiveAdvertisementsByCategoryId-v1/{categoryId}")

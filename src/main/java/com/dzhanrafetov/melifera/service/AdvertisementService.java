@@ -1,8 +1,6 @@
 package com.dzhanrafetov.melifera.service;
 
 
-
-
 import com.dzhanrafetov.melifera.dto.AdvertisementDto;
 import com.dzhanrafetov.melifera.dto.AdvertisementUserDto;
 import com.dzhanrafetov.melifera.dto.converters.AdvertisementDtoConverter;
@@ -25,7 +23,7 @@ import java.util.List;
 public class AdvertisementService {
 
 
-    private  final AdvertisementRepository repository;
+    private final AdvertisementRepository repository;
     private final AdvertisementDtoConverter converter;
     private final AdvertisementUserDtoConverter advertisementUserDtoConverter;
 
@@ -64,10 +62,9 @@ public class AdvertisementService {
             return converter.convert(repository.save(advertisement));
         } else {
 
-        throw new UserNotActiveException("You can't create advertisement when your account is not activated!");
+            throw new UserNotActiveException("You can't create advertisement when your account is not activated!");
+        }
     }
-    }
-
 
 
     public List<AdvertisementDto> getAdvertisements() {
@@ -78,15 +75,16 @@ public class AdvertisementService {
         return advertisementUserDtoConverter.convert(repository.findAll());
     }
 
-    public List<AdvertisementDto>getActiveAdvertisements() {
+    public List<AdvertisementDto> getActiveAdvertisements() {
         return converter.convert(repository.findByIsArchivedFalse());
     }
-    public List<AdvertisementUserDto>getActiveAdvertisementsUser() {
+
+    public List<AdvertisementUserDto> getActiveAdvertisementsUser() {
         return advertisementUserDtoConverter.convert(repository.findByIsArchivedFalse());
     }
 
 
-    public List<AdvertisementUserDto>getArchivedAdvertisementsUser() {
+    public List<AdvertisementUserDto> getArchivedAdvertisementsUser() {
         return advertisementUserDtoConverter.convert(repository.findByIsArchivedTrue());
     }
 
@@ -96,23 +94,24 @@ public class AdvertisementService {
     }
 
     //tuka sum
-    public List<AdvertisementDto>getActiveAdvertisementsAddedByUser() {
+    public List<AdvertisementDto> getActiveAdvertisementsAddedByUser() {
         User user = userService.findUserById(userService.getCurrentUser().getId());
         return converter.convert(repository.
                 findByIsArchivedFalseAndUserId(user.getId()));
     }
 
-    public List<AdvertisementDto>getArchivedAdvertisementsAddedByUser() {
+    public List<AdvertisementDto> getArchivedAdvertisementsAddedByUser() {
         User user = userService.findUserById(userService.getCurrentUser().getId());
         return converter.convert(repository.
                 findByIsArchivedTrueAndUserId(user.getId()));
     }
+
     public AdvertisementDto updateAdvertisement(String id, UpdateAdvertisementRequest request) {
 
         User user = userService.findUserById(userService.getCurrentUser().getId());
-        Advertisement advertisement=findAdvertisementByIdAndUser(id,user.getId());
+        Advertisement advertisement = findAdvertisementByIdAndUser(id, user.getId());
 
-        Category category= categoryService.findCategoryById(advertisement.getCategory().getId());
+        Category category = categoryService.findCategoryById(advertisement.getCategory().getId());
         Advertisement updateAdvertisement =
                 new Advertisement(
                         advertisement.getId(),
@@ -127,14 +126,12 @@ public class AdvertisementService {
         return converter.convert(repository.save(updateAdvertisement));
     }
 
-    public Advertisement findAdvertisementByIdAndUser(String id,Long user_id) {
-        return repository.findAdvertisementByIdAndUserId(id,user_id)
+    public Advertisement findAdvertisementByIdAndUser(String id, Long user_id) {
+        return repository.findAdvertisementByIdAndUserId(id, user_id)
                 .orElseThrow(() ->
                         new NotFoundException
                                 ("Advertisement couldn't found by id:  " + id));
     }
-
-
 
 
     public AdvertisementDto deleteAdvertisement(String id) {
@@ -158,30 +155,30 @@ public class AdvertisementService {
     }
 
 
-
     public List<Advertisement> findAdvertisementUserById(Long id) {
         return repository.findAdvertisementByUserId(id);
     }
 
     public List<AdvertisementDto> getAdvertisementsAddedByUser() {
-        return   converter.convert(findAdvertisementUserById
+        return converter.convert(findAdvertisementUserById
                 (userService.getCurrentUser().getId()));
 
     }
 
     public List<AdvertisementUserDto> getAdvertisementAddedByUser_V2() {
-        return   advertisementUserDtoConverter.convert(findAdvertisementUserById
+        return advertisementUserDtoConverter.convert(findAdvertisementUserById
                 (userService.getCurrentUser().getId()));
 
     }
+
     public AdvertisementDto getAdvertisementById(String id) {
-        Advertisement advertisement=findAdvertisementById(id);
+        Advertisement advertisement = findAdvertisementById(id);
         return converter.convert(advertisement);
     }
 
 
     public AdvertisementUserDto getAdvertisementUserById(String id) {
-        Advertisement advertisement=findAdvertisementById(id);
+        Advertisement advertisement = findAdvertisementById(id);
         return advertisementUserDtoConverter.convert(advertisement);
     }
 
@@ -190,21 +187,18 @@ public class AdvertisementService {
     }
 
 
-
-
     public AdvertisementUserDto archiveAdvertisement(String adv_id) {
-        Advertisement advertisement=findAdvertisementById(adv_id);
+        Advertisement advertisement = findAdvertisementById(adv_id);
 
-        changeArchiveAdvertisement(advertisement.getUser().getId(),adv_id, true);
+        changeArchiveAdvertisement(advertisement.getUser().getId(), adv_id, true);
         return null;
     }
 
 
-
     public AdvertisementDto activateAdvertisement(String adv_id) {
-        Advertisement advertisement=findAdvertisementById(adv_id);
+        Advertisement advertisement = findAdvertisementById(adv_id);
 
-        changeArchiveAdvertisement(advertisement.getUser().getId(),adv_id, false);
+        changeArchiveAdvertisement(advertisement.getUser().getId(), adv_id, false);
 
         return null;
     }
@@ -215,13 +209,9 @@ public class AdvertisementService {
 
     }
 
-//send email to admin
-//    public void activateAdvertisementByUser(String adv_id) {
-//        User user = userService.findUserById(userService.getCurrentUser().getId());
-//        changeArchiveAdvertisement(user.getId(),adv_id, false);
-//    }
-    public AdvertisementUserDto changeArchiveAdvertisement(Long user_id,String adv_id, Boolean archived) {
-        Advertisement advertisement=findAdvertisementByIdAndUser(adv_id,user_id);
+
+    public AdvertisementUserDto changeArchiveAdvertisement(Long user_id, String adv_id, Boolean archived) {
+        Advertisement advertisement = findAdvertisementByIdAndUser(adv_id, user_id);
 
         Advertisement archiveAdvertisement =
                 new Advertisement(
@@ -234,32 +224,11 @@ public class AdvertisementService {
                         archived,
                         advertisement.getUser(),
                         advertisement.getCategory()
-                        );
+                );
 
         return advertisementUserDtoConverter.convert(repository.save(archiveAdvertisement));
 
     }
-
-//catgory id
-//    public List<AdvertisementDto> getAdvertisementsByCategoryName(String categoryName) {
-//        // Retrieve the Category object with the given name
-//        List<Category> category = categoryService.findCategoryByName(categoryName);
-//        if (category == null) {
-//            // If the Category does not exist, return an empty list of DTOs
-//            return new ArrayList<>();
-//        }
-//
-//        // Retrieve the list of Advertisement entities with the given Category
-//        List<Advertisement> advertisements = repository.(category);
-//
-//        // Convert the list of Advertisement entities to a list of AdvertisementUserDto DTOs
-//        return converter.convert(advertisements);
-//    }
-//    public List<AdvertisementDto> getAdvertisementsByCategoryName(Category categoryName) {
-//        List<Advertisement> advertisements = repository.findByCategory(categoryName);
-//
-//        return converter.convert(advertisements);
-//    }
 
 
 }

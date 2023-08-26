@@ -70,6 +70,8 @@ public class User {
         this.isActive = isActive;
     }
 
+
+
     public Long getId() {
         return this.id;
     }
@@ -82,17 +84,13 @@ public class User {
         return this.username;
     }
 
-    public void setUsername(String firstName) {
-        this.username = firstName;
-    }
+
 
     public String getPassword() {
         return this.password;
     }
 
-    public void setPassword(String lastName) {
-        this.password = lastName;
-    }
+
 
     public String getMail() {
         return this.mail;

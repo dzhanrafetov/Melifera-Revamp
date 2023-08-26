@@ -5,13 +5,14 @@ import com.dzhanrafetov.melifera.configuration.TokenConfig;
 import com.dzhanrafetov.melifera.dto.UserDto;
 import com.dzhanrafetov.melifera.dto.converters.UserDtoConverter;
 import com.dzhanrafetov.melifera.dto.requests.CreateUserRequest;
+import com.dzhanrafetov.melifera.dto.requests.UpdateUserPasswordRequest;
 import com.dzhanrafetov.melifera.exception.DuplicateEntryException;
+import com.dzhanrafetov.melifera.exception.InvalidPasswordException;
 import com.dzhanrafetov.melifera.exception.NotFoundException;
 import com.dzhanrafetov.melifera.model.ConfirmationToken;
 import com.dzhanrafetov.melifera.model.User;
 import com.dzhanrafetov.melifera.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cglib.core.Local;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -65,16 +66,120 @@ public class UserService {
         return userDtoConverter.convert(user);
     }
 
-
     public UserDto createUser(CreateUserRequest userRequest) {
         validateUniqueUsernameAndEmail(userRequest.getUsername(), userRequest.getMail());
 
         User user = createUserFromRequest(userRequest);
         userRepository.save(user);
-        verificationByUser(user.getId());
+
+        // Generate and send the confirmation token
+        generateAndSendToken(user);
 
         return userDtoConverter.convert(user);
     }
+
+
+    public UserDto updateUserPassword(Long userId, UpdateUserPasswordRequest request) {
+
+        User user = findUserById(userId);
+
+        User updatedUser = new User(
+                user.getId(),
+                user.getUsername(),
+                passwordEncoder.encode(request.getNewPassword()),
+                user.getMail(),
+                user.getCreationTime(),
+                user.getActive());
+
+        return userDtoConverter.convert(userRepository.save(updatedUser));
+    }
+
+
+    @Transactional
+    public UserDto updateUserPasswordWithOldPassword(Long userId, UpdateUserPasswordRequest request) {
+        User user = findUserById(userId);
+        if (passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            User updatedUser = new User(
+                    user.getId(),
+                    user.getUsername(),
+                    passwordEncoder.encode(request.getNewPassword()),
+                    user.getMail(),
+                    user.getCreationTime(),
+                    user.getActive());
+            return userDtoConverter.convert(userRepository.save(updatedUser));
+
+        } else {
+                throw new InvalidPasswordException("The Old password is incorrect");
+        }
+    }
+
+
+
+
+
+    public String sendPasswordResetLink(String mail) {
+        User user = findUserByMail(mail);
+
+        String token = UUID.randomUUID().toString();
+        LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(tokenConfig.tokenExpirationMinutes());
+        ConfirmationToken confirmationToken = new ConfirmationToken(token, user, LocalDateTime.now(), expirationTime);
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+
+        String resetLink = appUrl + "/v1/user/reset-password?token=" + token;  // Update with your actual reset password URL
+        emailService.sendMail(user.getMail(), "Password Reset", "Click the following link to reset your password: " + resetLink);
+
+        return "Password reset link has been sent to your email.";
+    }
+
+
+    @Transactional
+    public UserDto resetPassword(String token, UpdateUserPasswordRequest updateUserPasswordRequest) {
+        ConfirmationToken confirmationToken = confirmationTokenService.getToken(token)
+                .orElseThrow(() -> new NotFoundException("Token not found"));
+
+        User user = confirmationToken.getUser();
+        String newPassword = passwordEncoder.encode(updateUserPasswordRequest.getNewPassword());
+
+        User updatedUser = new User(
+                user.getId(),
+                user.getUsername(),
+                newPassword,
+                user.getMail(),
+                user.getCreationTime(),
+                user.getActive());
+
+        confirmationTokenService.deleteConfirmationtoken(confirmationToken.getUser().getId());
+
+        return userDtoConverter.convert(userRepository.save(updatedUser));
+
+
+    }
+
+    public String resendToken(String mail) {
+        User user = findUserByMail(mail);
+
+        if (!user.getActive()) {
+            generateAndSendToken(user);
+            return "Confirmation token has been resent";
+        } else {
+            return "User is already active";
+        }
+    }
+
+    @Value("${confirmation.url}")
+
+    private String appUrl;
+
+    public void generateAndSendToken(User user) {
+        String token = UUID.randomUUID().toString();
+        LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(tokenConfig.tokenExpirationMinutes());
+        ConfirmationToken confirmationToken = new ConfirmationToken(token, user, LocalDateTime.now(), expirationTime);
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+        String link = appUrl + "/v1/user/confirm?token=" + token;
+        emailService.sendMail(user.getMail(), "Confirm mail",
+                "Hello, " + user.getUsername() + "\n" + "This is the confirmation link: " + link);
+    }
+
 
     private void validateUniqueUsernameAndEmail(String username, String email) {
         if (userRepository.existsUserByUsername(username) || userRepository.existsUserByMail(email)) {
@@ -91,7 +196,6 @@ public class UserService {
                 false
         );
     }
-
 
     public UserDto getUserByMail(String mail) {
         User user = findUserByMail(mail);
@@ -111,7 +215,6 @@ public class UserService {
         changeActivateUser(id, true);
 
     }
-
 
     public void deleteUser(Long id) {
         if (doesUserExists(id)) {
@@ -158,38 +261,12 @@ public class UserService {
         return userRepository.existsById(id);
     }
 
-
-    @Value("${confirmation.url}")
-
-    private String appUrl;
-
-    public void verificationByUser(Long id) {
-        User user = findUserById(id);
-
-        String token = UUID.randomUUID().toString();
-        if (!user.getActive()) {
-            LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(tokenConfig.tokenExpirationMinutes());
-            ConfirmationToken confirmationToken = new ConfirmationToken(token, user, LocalDateTime.now(), expirationTime);
-            confirmationTokenService.saveConfirmationToken(confirmationToken);
-
-            String link = appUrl + "/v1/user/confirm?token=" + token;
-            emailService.sendMail(user.getMail(), "Confirm mail",
-                    "Hello, " + user.getUsername() + "\n" + "This is the confirmation link: " + link);
-
-        } else {
-            throw new IllegalStateException("email already confirmed");
-        }
-    }
-
-
-
-@Transactional
+    @Transactional
     public String confirmToken(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
                         new IllegalStateException("token not found"));
-
 
         activateUser(confirmationToken.getUser().getId());
         confirmationTokenService.deleteConfirmationtoken(confirmationToken.getUser().getId());  // Delete the confirmation token
@@ -197,7 +274,6 @@ public class UserService {
         return "Your account is confirmed";
 
     }
-
 
     public UserDto getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

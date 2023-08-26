@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class DuplicateEntryException extends RuntimeException {
-    private static final String message ="The user exists with these values";
 
     public DuplicateEntryException() {
     }

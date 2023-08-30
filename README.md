@@ -10,7 +10,7 @@ Rewriting the backend and frontend of the Melifera project:
    - Sending an email with a password reset link: Users who forgot their password can enter their email address to receive a password reset link.
    - Verifying the old password before updating: Users who are logged into their accounts and wish to change their password are required to confirm their old password before setting a new one.
 - Implemented Email Confirmation Resend Feature.
-
+- Replaced Basic HTTP Authentication with JWT Authentication. Updated SecurityConfig to use JWT-based authorization.
 
 
 

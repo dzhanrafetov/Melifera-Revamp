@@ -283,7 +283,6 @@ public class UserService {
         } else {
             throw new NotFoundException("user not found");
         }
-
     }
 
 

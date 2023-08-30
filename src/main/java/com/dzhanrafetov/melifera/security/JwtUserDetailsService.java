@@ -1,6 +1,5 @@
 package com.dzhanrafetov.melifera.security;
 
-
 import com.dzhanrafetov.melifera.model.User;
 import com.dzhanrafetov.melifera.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,10 +10,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class SecurityUserDetailService implements UserDetailsService {
-private final UserRepository userRepository;
+public class JwtUserDetailsService implements UserDetailsService {
+    private final UserRepository userRepository;
 
-    public SecurityUserDetailService(UserRepository userRepository) {
+    public JwtUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -22,10 +21,8 @@ private final UserRepository userRepository;
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByUsername(username);
 
-        user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + username));
+        user.orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        return user.map(SecurityUserDetails::new).get();
-//getting user from database ,
-// convert it to SecurityUserDetails object and returning it
+        return new JwtUserDetails(user.get());
     }
 }

@@ -1,5 +1,6 @@
 package com.dzhanrafetov.melifera.security;
 
+import com.dzhanrafetov.melifera.enumeration.Role;
 import com.dzhanrafetov.melifera.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,21 +11,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SecurityUserDetails implements UserDetails {
-    private String userName;
-    private String password;
+public class JwtUserDetails implements UserDetails {
+    private String username;
+    private String password; // Add a password field
     private List<GrantedAuthority> authorities;
-    private boolean active;
 
-    public SecurityUserDetails(User user) {
-        this.userName = user.getUsername();
-        this.password = user.getPassword();
+    public JwtUserDetails(User user) {
+        this.username = user.getUsername();
+        this.password = user.getPassword(); // Set the password here
         this.authorities = Arrays.stream(user.getRole().name().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-        this.active = user.getActive();
-
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -33,12 +32,12 @@ public class SecurityUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return password; // Return the stored password
     }
 
     @Override
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     @Override
@@ -58,6 +57,6 @@ public class SecurityUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return true; // You can add your own logic here to check user status
     }
 }

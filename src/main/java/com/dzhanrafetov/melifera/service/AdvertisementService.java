@@ -176,7 +176,6 @@ public class AdvertisementService {
         return converter.convert(advertisement);
     }
 
-
     public AdvertisementUserDto getAdvertisementUserById(String id) {
         Advertisement advertisement = findAdvertisementById(id);
         return advertisementUserDtoConverter.convert(advertisement);
@@ -186,14 +185,12 @@ public class AdvertisementService {
         return LocalDateTime.now();
     }
 
-
     public AdvertisementUserDto archiveAdvertisement(String adv_id) {
         Advertisement advertisement = findAdvertisementById(adv_id);
 
         changeArchiveAdvertisement(advertisement.getUser().getId(), adv_id, true);
         return null;
     }
-
 
     public AdvertisementDto activateAdvertisement(String adv_id) {
         Advertisement advertisement = findAdvertisementById(adv_id);
@@ -208,7 +205,6 @@ public class AdvertisementService {
         return changeArchiveAdvertisement(user.getId(), adv_id, true);
 
     }
-
 
     public AdvertisementUserDto changeArchiveAdvertisement(Long user_id, String adv_id, Boolean archived) {
         Advertisement advertisement = findAdvertisementByIdAndUser(adv_id, user_id);

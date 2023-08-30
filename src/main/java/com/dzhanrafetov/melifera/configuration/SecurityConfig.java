@@ -36,6 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/authenticate").permitAll() // Allow authentication endpoint
                 .antMatchers("/v1/user/").permitAll() // Allow registration endpoint
 
+                .antMatchers("/city").permitAll() // Allow registration endpoint
+
                 // Other antMatchers for endpoints (configure as needed)
                 .antMatchers("/v1/advertisement/admin/**").hasRole("ADMIN") // Restrict to ADMIN role
 

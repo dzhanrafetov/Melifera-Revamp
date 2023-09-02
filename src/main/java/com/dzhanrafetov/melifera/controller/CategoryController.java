@@ -60,11 +60,6 @@ public class CategoryController {
 //        return "index";
 //    }
 
-
-
-
-
-
     @PutMapping("admin/updateCategoryById/{id}")
     public ResponseEntity<CategoryDto>
     updateCategory(@PathVariable Long id,

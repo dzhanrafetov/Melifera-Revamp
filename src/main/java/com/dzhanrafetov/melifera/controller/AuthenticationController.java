@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
-
 
     public AuthenticationController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
@@ -24,4 +25,11 @@ public class AuthenticationController {
         String jwtToken = authenticationService.authenticateUser(authenticationRequest);
         return ResponseEntity.ok(new AuthenticationDto(jwtToken));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        authenticationService.logout(request);
+        return ResponseEntity.ok("Logged out successfully");
+    }
+
 }

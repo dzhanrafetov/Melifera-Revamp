@@ -11,18 +11,29 @@ import java.util.Optional;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
+
     private final UserRepository userRepository;
 
     public JwtUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByUsername(username);
 
-        user.orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+        if (user.isPresent()) {
 
-        return new JwtUserDetails(user.get());
+            return new JwtUserDetails(user.get());
+        } else {
+
+
+            throw new UsernameNotFoundException("User not found: " + username);
+        }
     }
+
+
 }
+
+

@@ -16,6 +16,7 @@ import com.dzhanrafetov.melifera.model.User;
 import com.dzhanrafetov.melifera.repository.AdvertisementRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Cacheable;
 import java.time.*;
 import java.util.List;
 
@@ -70,6 +71,7 @@ public class AdvertisementService {
     public List<AdvertisementDto> getAdvertisements() {
         return converter.convert(repository.findAll());
     }
+
 
     public List<AdvertisementUserDto> getAdvertisementsUser() {
         return advertisementUserDtoConverter.convert(repository.findAll());
@@ -153,7 +155,6 @@ public class AdvertisementService {
                         new NotFoundException
                                 ("Advertisement couldn't found by id:  " + id));
     }
-
 
     public List<Advertisement> findAdvertisementUserById(Long id) {
         return repository.findAdvertisementByUserId(id);

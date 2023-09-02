@@ -37,6 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/user/").permitAll() // Allow registration endpoint
 
                 .antMatchers("/city").permitAll() // Allow registration endpoint
+                .antMatchers("/api/v1/user/**").permitAll() // Allow registration endpoint
+
 
                 // Other antMatchers for endpoints (configure as needed)
                 .antMatchers("/v1/advertisement/admin/**").hasRole("ADMIN") // Restrict to ADMIN role
@@ -58,11 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jwtUserDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

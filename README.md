@@ -35,6 +35,14 @@ Melifera is undergoing a significant transformation, both in its backend and fro
 - Configured Redis for efficient token storage and session management.
 - Utilized a Redis image from Docker for easy deployment.
 
+## Elasticsearch Integration
+- Integrated Elasticsearch for efficient search capabilities.
+- Implemented fuzzy searching to provide more relevant search results to users.
+
+## Logstash Data Migration
+- Implemented Logstash to migrate data from MySQL to Elasticsearch.
+- Configured Logstash pipelines to handle data migration for advertisements.
+
 ## Logout Feature
 - Added a logout feature to clear user sessions and remove tokens from Redis, improving session handling.
 

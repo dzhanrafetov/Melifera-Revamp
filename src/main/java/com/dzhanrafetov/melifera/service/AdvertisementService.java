@@ -16,7 +16,6 @@ import com.dzhanrafetov.melifera.model.User;
 import com.dzhanrafetov.melifera.repository.AdvertisementRepository;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Cacheable;
 import java.time.*;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class AdvertisementService {
                                 AdvertisementDtoConverter converter,
                                 AdvertisementUserDtoConverter advertisementUserDtoConverter,
                                 UserService userService,
-                                CategoryService categoryService) {
+                                CategoryService categoryService, AdvertisementDocumentService elasticsearchService) {
         this.repository = advertisementRepository;
         this.converter = converter;
         this.advertisementUserDtoConverter = advertisementUserDtoConverter;
@@ -226,7 +225,6 @@ public class AdvertisementService {
         return advertisementUserDtoConverter.convert(repository.save(archiveAdvertisement));
 
     }
-
 
 }
 

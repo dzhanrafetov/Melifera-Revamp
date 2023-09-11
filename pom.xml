@@ -62,6 +62,27 @@
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session-data-redis</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-elasticsearch -->
+		<!-- Spring Boot Starter for Elasticsearch -->
+
+		<!-- Spring Data Elasticsearch -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-elasticsearch</artifactId>
+			<!-- Use the specific version that you intend to use -->
+			<version>4.4.15</version>
+		</dependency>
+
+<!--		&lt;!&ndash; Elasticsearch High-Level REST Client &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.elasticsearch.client</groupId>-->
+<!--			<artifactId>elasticsearch-rest-high-level-client</artifactId>-->
+<!--			&lt;!&ndash; Use a version that is compatible with Spring Data Elasticsearch 4.4.15 &ndash;&gt;-->
+<!--			<version>7.10.2</version>-->
+<!--		</dependency>-->
+
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>

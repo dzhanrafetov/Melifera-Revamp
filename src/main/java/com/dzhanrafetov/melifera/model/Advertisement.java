@@ -1,7 +1,9 @@
 package com.dzhanrafetov.melifera.model;
 
 
+
 import org.hibernate.annotations.GenericGenerator;
+
 
 import javax.persistence.*;
 import java.math.BigDecimal;

@@ -1,32 +1,54 @@
-version: "3.7"
+version: '3'
 services:
-  spring_boot:
-    build: .
-    restart: always
-    ports:
-      - 9090:8080
-    networks:
-      - springapimysql-net
-    environment:
-      - spring.datasource.url=jdbc:mysql://mysqldb:3306/melifera?allowPublicKeyRetrieval=true
-      - EMAIL_USERNAME=vehicleproject528@gmail.com
-      - EMAIL_PASSWORD=hjhwmwyuzdldpoke
-      - CONFIRMATION.URL=http://localhost:9090
-    depends_on:
-      - mysqldb
-    volumes:
-      - .m2:/root/.m2
-  mysqldb:
-    image: "mysql:8.0"
-    restart: always
-    ports:
-      - 3307:3306
-    networks:
-      - springapimysql-net
-    environment:
-      MYSQL_DATABASE: melifera
-      DATABASE_USERNAME: root
-      MYSQL_ROOT_PASSWORD: 12345678
 
-networks:
-  springapimysql-net:
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.12.1
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+
+  redis:
+    image: redis:6.2.5
+    ports:
+      - "6379:6379"
+
+#  spring_boot:
+#      build: .
+#      restart: always
+#      ports:
+#        - "9090:8080"
+#
+#      environment:
+#        - spring.datasource.url=jdbc:mysql://mysqldb:3306/melifera?allowPublicKeyRetrieval=true
+#        - EMAIL_USERNAME=vehicleproject528@gmail.com
+#        - EMAIL_PASSWORD=hjhwmwyuzdldpoke
+#        - CONFIRMATION.URL=http://localhost:9090
+#        - spring.elasticsearch.uris=http://localhost:9200
+#      depends_on:
+#        - mysqldb
+#        - elasticsearch
+
+#  mysqldb:
+#     image: "mysql:8.0"
+#     restart: always
+#     ports:
+#       - "3307:3306"
+#
+#     environment:
+#      MYSQL_DATABASE: melifera
+#      DATABASE_USERNAME: root
+#      MYSQL_ROOT_PASSWORD: 12345678
+
+
+

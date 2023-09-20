@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/verifyToken").permitAll() // Allow authentication endpoint
 
+
                 .antMatchers(HttpMethod.POST, "/authenticate").permitAll() // Allow authentication endpoint
                 .antMatchers("/v1/user/").permitAll() // Allow registration endpoint
 

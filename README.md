@@ -1,29 +1,5 @@
 # Melifera-Revamp
 
-# Tech Stack
-
-Framework
-
-Spring Boot
-Spring Security (JWT Authentication)
-Database
-
-MySQL
-Search Engine
-
-Elasticsearch
-Session Management
-
-Redis
-Containerization
-
-Docker
-Data Migrations
-
-Logstash
-API Interaction
-
-OpenFeign
 
 Melifera is undergoing a significant transformation, both in its backend and frontend. Here's a summary of the key changes and enhancements:
 

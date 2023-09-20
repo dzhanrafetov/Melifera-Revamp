@@ -96,8 +96,9 @@ public class UserService {
 
 
     @Transactional
-    public UserDto updateUserPasswordWithOldPassword(Long userId, UpdateUserPasswordRequest request) {
-        User user = findUserById(userId);
+    public UserDto updateUserPasswordWithOldPassword(UpdateUserPasswordRequest request) {
+        User user = findUserById(getCurrentUser().getId());
+
         if (passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
             User updatedUser = new User(
                     user.getId(),
@@ -112,7 +113,6 @@ public class UserService {
                 throw new InvalidPasswordException("The Old password is incorrect");
         }
     }
-
 
 
 

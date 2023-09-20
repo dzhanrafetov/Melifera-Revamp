@@ -22,7 +22,7 @@ public class ImageController {
         this.ImageService = ImageService;
     }
 
-    @PostMapping("/uploadImageByAdvertisementId/{id}")
+    @PostMapping("uploadImageByAdvertisementId/{id}")
     public ResponseEntity<ImageDto> uploadImage
             (@PathVariable String id,
              @RequestParam("file") MultipartFile file) throws IOException {

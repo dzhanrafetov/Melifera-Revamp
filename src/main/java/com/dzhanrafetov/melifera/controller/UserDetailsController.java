@@ -22,7 +22,6 @@ public class UserDetailsController {
     }
 
 
-
     @PostMapping
     public ResponseEntity<UserDetailsDto> createUserDetails(
             @Valid @RequestBody CreateUserDetailsRequest request) {
@@ -37,8 +36,9 @@ public class UserDetailsController {
         return ResponseEntity.ok(userDetailsService.updateUserDetails(id, request));
 
     }
+
     @DeleteMapping("deleteUserDetailsById/{id}")
-    public ResponseEntity<Void> deleteUserDetails(@PathVariable Long id){
+    public ResponseEntity<Void> deleteUserDetails(@PathVariable Long id) {
         userDetailsService.deleteUserDetails(id);
         return ResponseEntity.ok().build();
     }

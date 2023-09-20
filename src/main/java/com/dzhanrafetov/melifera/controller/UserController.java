@@ -33,31 +33,13 @@ public class UserController {
 
     }
 
-    @GetMapping("/getUserDetails")
-    public ResponseEntity<UserDto> getUser() {
-        return ResponseEntity.ok(userService.getUser());
-
-    }
-
-    @PutMapping("updateUserPasswordById/{id}")
+    @PutMapping("admin/updateUserPasswordById/{id}")
     public ResponseEntity<UserDto> updateUserPassword
             (@PathVariable Long id,
              @Valid @RequestBody UpdateUserPasswordRequest updateUserPasswordRequest) {
         return ResponseEntity.ok
                 (userService.updateUserPassword(id, updateUserPasswordRequest));
     }
-
-    @PostMapping("/send-password-reset-link")
-    public ResponseEntity<String> sendPasswordResetLink(@RequestParam String mail) {
-        String result = userService.sendPasswordResetLink(mail);
-        return ResponseEntity.ok(result);
-    }
-
-    @PostMapping("/reset-password")
-    public ResponseEntity<UserDto> resetPassword(@RequestParam String token, @RequestBody UpdateUserPasswordRequest updateUserPasswordRequest) {
-        return ResponseEntity.ok(userService.resetPassword(token, updateUserPasswordRequest));
-    }
-
 
     @GetMapping("admin/getUserByMail/{mail}")
     public ResponseEntity<UserDto> getUserByMail(@PathVariable String mail) {
@@ -73,13 +55,6 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getInActiveUsers() {
         return ResponseEntity.ok(userService.getInActiveUsers());
     }
-
-    @PostMapping
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody CreateUserRequest userRequest) {
-        return ResponseEntity.ok(userService.createUser(userRequest));
-
-    }
-
     @PatchMapping("admin/deactivateUserById/{id}")
     public ResponseEntity<Void> deactivateUser(@PathVariable("id") Long id) {
         userService.deactivateUser(id);
@@ -93,16 +68,6 @@ public class UserController {
         return ResponseEntity.noContent().build(); // Use 204 No Content
 
     }
-
-    @PutMapping("updateUserPasswordWithOldPassword/{id}")
-    public ResponseEntity<UserDto> updateUserPasswordWithOldPassword(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateUserPasswordRequest request) {
-
-        return ResponseEntity.ok(userService.updateUserPasswordWithOldPassword(id, request));
-    }
-
-
     @DeleteMapping("admin/deleteUserById/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
@@ -114,6 +79,39 @@ public class UserController {
     public ResponseEntity<Boolean> isUserIdExist(@PathVariable Long id) {
         return ResponseEntity.ok(userService.isUserIdExist(id));
     }
+
+
+    @PostMapping
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody CreateUserRequest userRequest) {
+        return ResponseEntity.ok(userService.createUser(userRequest));
+
+    }
+
+    @PostMapping("/send-password-reset-link")
+    public ResponseEntity<String> sendPasswordResetLink(@RequestParam String mail) {
+        String result = userService.sendPasswordResetLink(mail);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<UserDto> resetPassword(@RequestParam String token, @RequestBody UpdateUserPasswordRequest updateUserPasswordRequest) {
+        return ResponseEntity.ok(userService.resetPassword(token, updateUserPasswordRequest));
+    }
+
+    @GetMapping("/getUserDetails")
+    public ResponseEntity<UserDto> getUser() {
+        return ResponseEntity.ok(userService.getUser());
+
+    }
+
+
+    @PutMapping("updateUserPasswordWithOldPassword")
+    public ResponseEntity<UserDto> updateUserPasswordWithOldPassword(
+            @Valid @RequestBody UpdateUserPasswordRequest request) {
+
+        return ResponseEntity.ok(userService.updateUserPasswordWithOldPassword(request));
+    }
+
 
     @GetMapping("confirm")
     public String confirm(@RequestParam("token") String token) {

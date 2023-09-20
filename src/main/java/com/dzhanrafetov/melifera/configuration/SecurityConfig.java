@@ -31,22 +31,44 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/verifyToken").permitAll() // Allow authentication endpoint
 
+                // Advertisement Controller
+                .antMatchers("/v1/advertisement/admin/**").hasRole("ADMIN")
+                .antMatchers("/v1/advertisement/all/**").permitAll()
+                .antMatchers("/v1/advertisement/**").hasAnyRole("ADMIN", "USER")
 
-                .antMatchers(HttpMethod.POST, "/authenticate").permitAll() // Allow authentication endpoint
-                .antMatchers("/v1/user/").permitAll() // Allow registration endpoint
+                // Advertisement Document Controller
+                .antMatchers("/v1/advertisement-documents/**").permitAll()
 
-                .antMatchers("/city").permitAll() // Allow registration endpoint
-                .antMatchers("/api/v1/user/**").permitAll() // Allow registration endpoint
+                // Authentication Controller
+                .antMatchers(HttpMethod.POST, "/authenticate").permitAll()
+                .antMatchers(HttpMethod.POST, "/logout").permitAll()
 
+                //Category Controller
+                .antMatchers("/v1/category/admin/**").hasRole("ADMIN")
+                .antMatchers("/v1/category/**").permitAll()
 
-                // Other antMatchers for endpoints (configure as needed)
-                .antMatchers("/v1/advertisement/admin/**").hasRole("ADMIN") // Restrict to ADMIN role
+                //CityApi Controller
+                .antMatchers("/v1/api/**").permitAll()
 
-                .antMatchers("/v1/advertisement/**")
-                .hasAnyRole("ADMIN", "USER")
+                //Email Controller
+                .antMatchers("/v1/email/**").hasRole("ADMIN")
 
+                //Image Controller
+                .antMatchers(HttpMethod.GET,"/v1/image/**").permitAll()
+                .antMatchers("/v1/image/**").hasAnyRole("ADMIN","USER")
+
+                //User Controller
+                .antMatchers("/v1/user/admin/**").hasRole("ADMIN")
+                .antMatchers("/v1/user/**").permitAll()
+
+                //UserDetails Controller
+                .antMatchers("/v1/userdetails/**")
+                .hasAnyRole("ADMIN","USER")
+
+                //Others
+
+                .antMatchers(HttpMethod.GET, "/verifyToken").permitAll()
 
                 .anyRequest().authenticated() // Require authentication for other endpoints
                 .and()

@@ -53,12 +53,6 @@ public class CategoryController {
 
     }
 
-//    @GetMapping("categories/")
-//    public String getAllCategories(Model model) {
-//        List<CategoryDto> categories = categoryService.getAllCategories();
-//        model.addAttribute("categories", categories);
-//        return "index";
-//    }
 
     @PutMapping("admin/updateCategoryById/{id}")
     public ResponseEntity<CategoryDto>

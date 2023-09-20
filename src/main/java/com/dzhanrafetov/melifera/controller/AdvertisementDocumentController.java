@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/advertisement-documents")
+@RequestMapping("/v1/advertisement-documents")
 public class AdvertisementDocumentController {
 
     private final AdvertisementDocumentService advertisementDocumentService;

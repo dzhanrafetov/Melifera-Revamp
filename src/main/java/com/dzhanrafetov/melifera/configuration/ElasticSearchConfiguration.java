@@ -12,25 +12,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @Configuration
     @EnableElasticsearchRepositories
     public class ElasticSearchConfiguration {
-    //
-////        @Bean
-////        public ElasticsearchRestTemplate elasticsearchTemplate() {
-////            ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-////                    .connectedTo("localhost:9200")
-////                    .build();
-////
-////            return new ElasticsearchRestTemplate(RestClients.create(clientConfiguration).rest());
-////        }
-//
-//        @Bean
-//        public RestHighLevelClient elasticsearchClient() {
-//            ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-//                    .connectedTo(elasticsearchHost + ":" + elasticsearchPort)
-//                    .build();
-//
-//            return RestClients.create(clientConfiguration).rest();
-//        }
-//    }
+
     @Bean
     public ElasticsearchOperations elasticsearchTemplate() {
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()

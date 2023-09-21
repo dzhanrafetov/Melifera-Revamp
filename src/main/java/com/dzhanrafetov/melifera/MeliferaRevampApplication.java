@@ -8,8 +8,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 public class MeliferaRevampApplication {
 
-
-
 	public static void main(String[] args) {
 		SpringApplication.run(MeliferaRevampApplication.class, args);
 	}

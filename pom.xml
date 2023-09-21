@@ -64,32 +64,14 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-elasticsearch -->
 		<!-- Spring Boot Starter for Elasticsearch -->
-
-
-		<!-- Spring Data Elasticsearch -->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.data</groupId>-->
-<!--			<artifactId>spring-data-elasticsearch</artifactId>-->
-<!--			&lt;!&ndash; Use the specific version that you intend to use &ndash;&gt;-->
-<!--			<version>4.4.15</version>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 
 
 
-		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-elasticsearch -->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.data</groupId>-->
-<!--			<artifactId>spring-data-elasticsearch</artifactId>-->
-<!--			<version>5.1.4</version>-->
-<!--		</dependency>-->
-
-
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.elasticsearch.client</groupId>-->
-<!--			<artifactId>elasticsearch-rest-high-level-client</artifactId>-->
-<!--			<version>7.17.13</version>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
@@ -99,7 +81,11 @@
 			<artifactId>elasticsearch-rest-high-level-client</artifactId>
 			<version>7.16.1</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+			<version>2.12.1</version> <!-- Use the appropriate version -->
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>

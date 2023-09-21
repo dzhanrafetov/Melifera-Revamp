@@ -70,6 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(HttpMethod.GET, "/verifyToken").permitAll()
 
+                .antMatchers("/swagger-ui/**","/swagger-ui/","/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs","/v2/api-docs.yaml", "/webjars/**").permitAll()
                 .anyRequest().authenticated() // Require authentication for other endpoints
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No session management

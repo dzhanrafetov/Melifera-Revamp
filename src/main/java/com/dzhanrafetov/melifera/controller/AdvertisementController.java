@@ -24,23 +24,22 @@ public class AdvertisementController {
         this.advertisementService = advertisementService;
     }
 
-
-
     @GetMapping("all/getActiveAdvertisements")
     public ResponseEntity<List<AdvertisementDto>> getActiveAdvertisements() {
         return ResponseEntity.ok(advertisementService.getActiveAdvertisements());
     }
 
-
     @GetMapping("admin/getAllAdvertisementsV1")
     public ResponseEntity<List<AdvertisementDto>> getAllAdvertisements() {
         return ResponseEntity.ok(advertisementService.getAdvertisements());
     }
+
     @GetMapping("admin/getAllAdvertisementsV2")
     public ResponseEntity<List<AdvertisementUserDto>> getAllAdvertisementsUser() {
         return ResponseEntity.ok(advertisementService.getAdvertisementsUser());
 
     }
+
     @GetMapping("getAdvertisementById/{id}")
     public ResponseEntity<AdvertisementDto> getAdvertisementById(@PathVariable String id) {
         return ResponseEntity.ok(advertisementService.getAdvertisementById(id));
@@ -48,17 +47,19 @@ public class AdvertisementController {
     }
 
     @GetMapping("getAdvertisementsAddedByUser")
-    public ResponseEntity<List<AdvertisementDto>>getAdvertisementsAddedByUser() {
+    public ResponseEntity<List<AdvertisementDto>> getAdvertisementsAddedByUser() {
         return ResponseEntity.ok(advertisementService.getAdvertisementsAddedByUser());
 
     }
+
     @GetMapping("getActiveAdvertisementsAddedByUser")
-    public ResponseEntity<List<AdvertisementDto>>getActiveAdvertisementsAddedByUser() {
+    public ResponseEntity<List<AdvertisementDto>> getActiveAdvertisementsAddedByUser() {
         return ResponseEntity.ok(advertisementService.getActiveAdvertisementsAddedByUser());
 
     }
+
     @GetMapping("getArchivedAdvertisementsAddedByUser")
-    public ResponseEntity<List<AdvertisementDto>>getArchivedAdvertisementsAddedByUser() {
+    public ResponseEntity<List<AdvertisementDto>> getArchivedAdvertisementsAddedByUser() {
         return ResponseEntity.ok(advertisementService.getArchivedAdvertisementsAddedByUser());
 
     }
@@ -68,18 +69,20 @@ public class AdvertisementController {
         return ResponseEntity.ok(advertisementService.getAdvertisementAddedByUser_V2());
 
     }
+
     @PostMapping
     public ResponseEntity<AdvertisementDto> createAdvertisement
-         (@Valid @RequestBody CreateAdvertisementRequest advertisementRequest) {
-          return ResponseEntity.ok
-                  (advertisementService.
-                          createAdvertisement(advertisementRequest));
+            (@Valid @RequestBody CreateAdvertisementRequest advertisementRequest) {
+        return ResponseEntity.ok
+                (advertisementService.
+                        createAdvertisement(advertisementRequest));
 
     }
+
     @PutMapping("updateAdvertisementById/{id}")
     public ResponseEntity<AdvertisementDto> updateAdvertisement
             (@PathVariable String id,
-              @Valid @RequestBody UpdateAdvertisementRequest updateAdvertisementRequest) {
+             @Valid @RequestBody UpdateAdvertisementRequest updateAdvertisementRequest) {
         return ResponseEntity.ok
                 (advertisementService.updateAdvertisement(id, updateAdvertisementRequest));
     }
@@ -90,16 +93,16 @@ public class AdvertisementController {
         return ResponseEntity.ok().build();
 
     }
+
     @PatchMapping("admin/archiveAdvertisementById/{advId}")
-    public ResponseEntity<Void> archiveAdvertisement(@PathVariable("advId") String advId)
-    {
-        advertisementService.archiveAdvertisement( advId);
+    public ResponseEntity<Void> archiveAdvertisement(@PathVariable("advId") String advId) {
+        advertisementService.archiveAdvertisement(advId);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("admin/activateAdvertisementById/{advId}")
     public ResponseEntity<Void> activateAdvertisement(@PathVariable("advId") String advId) {
-        advertisementService.activateAdvertisement( advId);
+        advertisementService.activateAdvertisement(advId);
         return ResponseEntity.ok().build();
     }
 
@@ -116,8 +119,6 @@ public class AdvertisementController {
         return ResponseEntity.ok(advertisementService.getAdvertisementUserById(id));
 
     }
-
-
 
 
     @GetMapping("all/getActiveAdvertisementsByCategoryId-v1/{categoryId}")

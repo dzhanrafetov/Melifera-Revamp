@@ -1,6 +1,7 @@
 package com.dzhanrafetov.melifera.service;
 
 import com.dzhanrafetov.melifera.dto.ImageDto;
+import com.dzhanrafetov.melifera.dto.UserDto;
 import com.dzhanrafetov.melifera.dto.converters.ImageDtoConverter;
 import com.dzhanrafetov.melifera.dto.requests.ImageUploadRequest;
 import com.dzhanrafetov.melifera.exception.DuplicateEntryException;
@@ -18,18 +19,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ImageService {
     private final ImageDtoConverter converter;
     private final AdvertisementService advertisementService;
+    private final UserService userService;
     private final ImageRepository repository;
 
-    public ImageService(ImageDtoConverter converter, AdvertisementService advertisementService, ImageRepository repository) {
+    public ImageService(ImageDtoConverter converter, AdvertisementService advertisementService, UserService userService, ImageRepository repository) {
         this.converter = converter;
         this.advertisementService = advertisementService;
+        this.userService = userService;
         this.repository = repository;
     }
 
@@ -51,11 +53,16 @@ public class ImageService {
 
 
 
-
+//TODO  FIX THE IMAGE UPLOAD LOGIC(ADVERTISEMENT ID AND USER ID)
     public ImageDto uploadImage(String id, ImageUploadRequest request) throws IOException {
         Advertisement advertisement = advertisementService.findAdvertisementById(id);
         List<ImageDto> existingImages = getImagesByAdvertisementId(id);
 
+
+        UserDto currentUser = userService.getCurrentUser(); // You need to implement this method
+        if (!advertisement.getUser().getId().equals(currentUser.getId())) {
+            throw new IllegalArgumentException("You are not allowed to upload images for this advertisement.");
+        }
         if (existingImages.stream().anyMatch(image -> image.getName().equals(request.getFile().getOriginalFilename()))) {
             throw new DuplicateEntryException("The image is already uploaded for this advertisement.");
         }

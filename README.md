@@ -1,4 +1,4 @@
-# Melifera-Revamp Ecommerce Website
+# Melifera-Revamp Ecommerce API
 
 ## Description
 

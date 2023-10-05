@@ -1,50 +1,66 @@
-# Melifera-Revamp
+# Melifera-Revamp Ecommerce Website
 
+## Description
 
-Melifera is undergoing a significant transformation, both in its backend and frontend. Here's a summary of the key changes and enhancements:
+Melifera-Revamp is an upgraded version of the 'Melifera' application,
+a web platform meticulously designed to facilitate users in uploading ads for various bee-related products,
+services, and related items.
+This project seeks to create a secure and controlled environment where bee enthusiasts and businesses can connect and
+share their offerings with the community.
 
-## Dockerization
-- Dockerized the project for easier deployment and management.
+## Tech Stack
 
-## Email Sending
-- Eliminated hardcoded email sending links, making the email system more flexible and maintainable.
+**Framework**
 
-## City Data Integration
-- Implemented data fetching from an external API to retrieve the cities of Bulgaria using Open Feign, enhancing location-based features.
+- Spring Boot 
 
-## Enhanced Image Uploading
-- Improved image uploading capabilities:
-  - Users can now upload up to 5 photos for each advertisement.
-  - Prevented the upload of duplicate images for the same advertisement.
+**Security Layer**
 
-## Confirmation Token Management
-- Added scheduling to automatically remove confirmation tokens after a 3-minute expiration period, improving security and efficiency.
+- Spring Security 3.0.0
+- JSON Web Token (JWT) 
 
-## Password Update Features
-- Introduced password update features:
-  - Users can request a password reset link by providing their email address.
-  - Users are required to verify their old password before setting a new one for improved account security.
+**Development Language**
 
-## Email Confirmation Resend
-- Implemented a feature allowing users to request the resending of email confirmation.
+ - Java 17
 
-## JWT Authentication
-- Replaced Basic HTTP Authentication with JWT Authentication, enhancing security.
-- Updated SecurityConfig to use JWT-based authorization.
+**Database Management**
 
-## Redis Integration
-- Configured Redis for efficient token storage and session management.
-- Utilized a Redis image from Docker for easy deployment.
+ - MySQL
 
-## Elasticsearch Integration
-- Integrated Elasticsearch for efficient search capabilities.
-- Implemented fuzzy searching to provide more relevant search results to users.
+**Data Migration Tool**
 
-## Logstash Data Migration
-- Implemented Logstash to migrate data from MySQL to Elasticsearch.
-- Configured Logstash pipelines to handle data migration for advertisements.
+- Logstash
+  - Orchestrates a data pipeline for seamless data migration from MySQL to Elasticsearch.
 
-## Logout Feature
-- Added a logout feature to clear user sessions and remove tokens from Redis, improving session handling.
+**Caching Mechanism** 
 
-These changes are aimed at enhancing the performance, security, and functionality of the Melifera application.
+ - Redis 
+   - Utilized for caching, including secure management of JWT tokens.
+ - Redis Insight
+   - for real-time visualization and insights into Redis cache data.
+
+**Search Engine Integration**
+
+ - Elasticsearch 
+    - Integrated for efficient search capabilities.
+ - Kibana 
+   - for visualizing and monitoring data in the Elasticsearch database.
+
+**API Interaction Platform**
+
+  - Postman
+
+**External Services Integration**
+
+  - Spring Cloud OpenFeign
+     - Fetches data from external APIs for city information.
+**Data Visualization Tool**
+
+**Containerization**
+
+- Docker
+
+**Version Control System**
+
+ - Git 
+ - GitHub

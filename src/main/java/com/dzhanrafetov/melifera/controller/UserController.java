@@ -3,6 +3,7 @@ package com.dzhanrafetov.melifera.controller;
 
 import com.dzhanrafetov.melifera.dto.UserDto;
 import com.dzhanrafetov.melifera.dto.requests.CreateUserRequest;
+import com.dzhanrafetov.melifera.dto.requests.UpdateUserPasswordAdminRequest;
 import com.dzhanrafetov.melifera.dto.requests.UpdateUserPasswordRequest;
 import com.dzhanrafetov.melifera.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -34,14 +35,16 @@ public class UserController {
 
     }
 
-    @PutMapping("admin/updateUserPasswordById/{id}")
-    public ResponseEntity<UserDto> updateUserPassword
-            (@PathVariable Long id,
-             @Valid @RequestBody UpdateUserPasswordRequest updateUserPasswordRequest) {
-        return ResponseEntity.ok
-                (userService.updateUserPassword(id, updateUserPasswordRequest));
-    }
 
+    @PutMapping("admin/updateUserPasswordById/{id}")
+    public ResponseEntity<Void> updateUserPassword(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateUserPasswordAdminRequest updateUserPasswordAdminRequest) {
+
+        userService.updateUserPassword(id, updateUserPasswordAdminRequest);
+
+        return ResponseEntity.noContent().build();
+    }
     @GetMapping("admin/getUserByMail/{mail}")
     public ResponseEntity<UserDto> getUserByMail(@PathVariable String mail) {
         return ResponseEntity.ok(userService.getUserByMail(mail));
@@ -72,7 +75,7 @@ public class UserController {
     @DeleteMapping("admin/deleteUserById/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build(); // Use 204 No Content
 
     }
 

@@ -36,24 +36,10 @@ public class ImageService {
     }
 
 
-//    public List<ImageDto> uploadImages(String id, ImageUploadRequest imageRequests) throws IOException {
-//        if (imageRequests.size() > 5) { // Fixed the condition to check for exceeding 5 images
-//            throw new IllegalArgumentException("You can upload up to 5 images.");
-//        }
-//
-//        List<ImageDto> uploadedImages = new ArrayList<>();
-//
-//        for (ImageUploadRequest request : imageRequests) {
-//            ImageDto uploadedImage = uploadImageWithRequest(id, request); // Use the uploadImageWithLimit method
-//            uploadedImages.add(uploadedImage);
-//        }
-//
-//        return uploadedImages;
-//    }
 
 
 
-//TODO  FIX THE IMAGE UPLOAD LOGIC(ADVERTISEMENT ID AND USER ID)
+
     public ImageDto uploadImage(String id, ImageUploadRequest request) throws IOException {
         Advertisement advertisement = advertisementService.findAdvertisementById(id);
         List<ImageDto> existingImages = getImagesByAdvertisementId(id);
@@ -105,13 +91,16 @@ public class ImageService {
     public List<ImageDto>getAllImages() {
         return converter.convert(repository.findAll());
     }
-    public Image findImageById(Long id) {
-        return  repository.findById(id).
+    public void findImageById(Long id) {
+        repository.findById(id).
                 orElseThrow(() -> new NotFoundException("Image couldn't found by id:  " + id));
-    }
 
+    }
+//TODO  FIX THIS
     public void deleteImage(Long id) {
+
         findImageById(id);
+
         repository.deleteById(id);
     }
 

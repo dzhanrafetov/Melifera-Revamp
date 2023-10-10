@@ -44,7 +44,7 @@ public class UserDetailsService {
     public UserDetailsDto updateUserDetails(Long userDetailsId, UpdateUserDetailsRequest request) {
 
         User user = userService.findUserById(userService.getCurrentUser().getId());
-        UserDetails userDetails=findUserDetailsByIdAndUser(userDetailsId,user.getId());
+        UserDetails userDetails = findUserDetailsByIdAndUser(userDetailsId, user.getId());
 
         UserDetails updatedUserDetails = new UserDetails(
                 userDetails.getId(),
@@ -70,8 +70,8 @@ public class UserDetailsService {
         repository.deleteById(id);
     }
 
-    private UserDetails findUserDetailsById(Long userDetailsId) {
-        return repository.findById(userDetailsId).orElseThrow(() -> new NotFoundException("User details couldn't be found by following id: " + userDetailsId));
+    private void findUserDetailsById(Long userDetailsId) {
+        repository.findById(userDetailsId).orElseThrow(() -> new NotFoundException("User details couldn't be found by following id: " + userDetailsId));
     }
 
 }

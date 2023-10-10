@@ -5,6 +5,7 @@ import com.dzhanrafetov.melifera.configuration.TokenConfig;
 import com.dzhanrafetov.melifera.dto.UserDto;
 import com.dzhanrafetov.melifera.dto.converters.UserDtoConverter;
 import com.dzhanrafetov.melifera.dto.requests.CreateUserRequest;
+import com.dzhanrafetov.melifera.dto.requests.UpdateUserPasswordAdminRequest;
 import com.dzhanrafetov.melifera.dto.requests.UpdateUserPasswordRequest;
 import com.dzhanrafetov.melifera.exception.DuplicateEntryException;
 import com.dzhanrafetov.melifera.exception.InvalidPasswordException;
@@ -13,6 +14,7 @@ import com.dzhanrafetov.melifera.model.ConfirmationToken;
 import com.dzhanrafetov.melifera.model.User;
 import com.dzhanrafetov.melifera.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -79,7 +81,7 @@ public class UserService {
     }
 
 
-    public UserDto updateUserPassword(Long userId, UpdateUserPasswordRequest request) {
+    public void updateUserPassword(Long userId, UpdateUserPasswordAdminRequest request) {
 
         User user = findUserById(userId);
 
@@ -91,7 +93,9 @@ public class UserService {
                 user.getCreationTime(),
                 user.getActive());
 
-        return userDtoConverter.convert(userRepository.save(updatedUser));
+        userRepository.save(updatedUser);
+
+
     }
 
 
@@ -113,7 +117,6 @@ public class UserService {
                 throw new InvalidPasswordException("The Old password is incorrect");
         }
     }
-
 
 
 
